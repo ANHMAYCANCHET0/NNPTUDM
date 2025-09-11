@@ -9,17 +9,22 @@
 <body>
     <script src="./main.js"></script>
     <div>
+        <label for="id">ID:</label>
         <input type="text" id="id">
+        <label for="title">Tiêu đề:</label>
         <input type="text" id="title">
+        <label for="view">Lượt xem:</label>
         <input type="text" id="view">
         <input type="button" id="submit" onclick="SaveData()" value="Save">
     </div>
     <div>
         <table>
             <thead>
-                <td>ID</td>
-                <td>Title</td>
-                <td>Views</td>
+                <tr>
+                    <td>ID</td>
+                    <td>Title</td>
+                    <td>Views</td>
+                </tr>
             </thead>
             <tbody id="body">       
             </tbody>

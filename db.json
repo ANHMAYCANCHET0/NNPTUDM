@@ -3,17 +3,32 @@
     {
       "id": "1",
       "title": "a title",
-      "views": 100
+      "views": 100,
+      "isDelete": false
     },
     {
       "id": "2",
       "title": "another title",
-      "views": 200
+      "views": 200,
+      "isDelete": false
     },
     {
       "title": "heheeh",
       "views": "20000",
-      "id": "3"
+      "id": "3",
+      "isDelete": false
+    },
+    {
+      "id": "4",
+      "title": "Xin Chao",
+      "views": "1111111",
+      "isDelete": true
+    },
+    {
+      "id": "5",
+      "title": "Mới",
+      "views": "666",
+      "isDelete": false
     }
   ],
   "comments": [

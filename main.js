@@ -17,20 +17,20 @@ function convertDataToHTML(post) {
     result += "<td>" + post.id + "</td>";
     result += "<td>" + post.title + "</td>";
     result += "<td>" + post.views + "</td>";
-    result += "<td><input type='submit' value='Delete' onclick='Delete("+post.id+")'></input></td>";
+    result += "<td><input type='submit' value='Delete' onclick='Delete(" + post.id + ")'></input></td>";
     result += "</tr>";
     return result;
 }
 
-// Thêm mới: ID tự tăng
-async function SaveData(){
+// Thêm mới: ID tự tăng, luôn là số
+async function SaveData() {
     let title = document.getElementById("title").value;
     let view = document.getElementById("view").value;
 
-    // Lấy danh sách post để tìm id lớn nhất
+    // Lấy danh sách post để tìm id lớn nhất, ép kiểu về số
     let data = await fetch("http://localhost:3000/posts");
     let posts = await data.json();
-    let maxId = posts.length > 0 ? Math.max(...posts.map(p => p.id)) : 0;
+    let maxId = posts.length > 0 ? Math.max(...posts.map(p => Number(p.id))) : 0;
     let newId = maxId + 1;
 
     let dataObj = {
@@ -51,9 +51,9 @@ async function SaveData(){
     LoadData(); // Refresh lại bảng
 }
 
-// Xoá mềm: cập nhật isDelete = true
-async function Delete(id){
-    // Lấy post hiện tại
+// Xoá mềm: cập nhật isDelete = true, luôn truyền id là số
+async function Delete(id) {
+    id = Number(id); // Đảm bảo id là số
     let data = await fetch('http://localhost:3000/posts/' + id);
     if (data.ok) {
         let post = await data.json();
