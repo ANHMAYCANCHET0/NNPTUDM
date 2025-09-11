@@ -25,10 +25,34 @@
       "isDelete": true
     },
     {
-      "id": "5",
-      "title": "Mới",
-      "views": "666",
+      "id": "7",
+      "title": "Số 7 may mắn",
+      "views": "12",
       "isDelete": false
+    },
+    {
+      "id": "8",
+      "title": "May mắn",
+      "views": "1200",
+      "isDelete": true
+    },
+    {
+      "id": "5",
+      "title": "Nhỏ thôi",
+      "views": "55",
+      "isDelete": true
+    },
+    {
+      "id": "6",
+      "title": "Nhỏ thôi nhé",
+      "views": "55",
+      "isDelete": false
+    },
+    {
+      "id": "9",
+      "title": "Nhỏ thôi nhé nhỏ ới",
+      "views": "5533",
+      "isDelete": true
     }
   ],
   "comments": [

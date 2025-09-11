@@ -3,6 +3,8 @@ LoadData();
 async function LoadData() {
     let data = await fetch('http://localhost:3000/posts');
     let posts = await data.json();
+    // Sắp xếp theo chiều tăng của ID (ép kiểu số để so sánh)
+    posts = posts.sort((a, b) => Number(a.id) - Number(b.id));
     let body = document.getElementById("body");
     body.innerHTML = ""; // Xóa dữ liệu cũ
     for (const post of posts) {
@@ -17,24 +19,40 @@ function convertDataToHTML(post) {
     result += "<td>" + post.id + "</td>";
     result += "<td>" + post.title + "</td>";
     result += "<td>" + post.views + "</td>";
-    result += "<td><input type='submit' value='Delete' onclick='Delete(" + post.id + ")'></input></td>";
+    result += "<td><input type='submit' value='Delete' onclick='Delete(\"" + post.id + "\")'></input></td>";
     result += "</tr>";
     return result;
 }
 
-// Thêm mới: ID tự tăng, luôn là số
+// Thêm mới: Cho phép nhập ID, nếu không nhập thì tự tăng, luôn lưu id là string và kiểm tra trùng
 async function SaveData() {
+    let idInput = document.getElementById("id").value.trim();
     let title = document.getElementById("title").value;
     let view = document.getElementById("view").value;
 
-    // Lấy danh sách post để tìm id lớn nhất, ép kiểu về số
+    // Lấy danh sách post để kiểm tra id đã tồn tại
     let data = await fetch("http://localhost:3000/posts");
     let posts = await data.json();
-    let maxId = posts.length > 0 ? Math.max(...posts.map(p => Number(p.id))) : 0;
-    let newId = maxId + 1;
+    let usedIds = posts.map(p => p.id.toString());
+
+    let id;
+    if (idInput !== "") {
+        id = idInput.toString();
+        if (usedIds.includes(id)) {
+            alert("ID đã tồn tại, vui lòng nhập ID khác!");
+            return;
+        }
+    } else {
+        // Tìm số nhỏ nhất chưa dùng, bắt đầu từ 1
+        let nextId = 1;
+        while (usedIds.includes(nextId.toString())) {
+            nextId++;
+        }
+        id = nextId.toString();
+    }
 
     let dataObj = {
-        id: newId,
+        id: id,
         title: title,
         views: view,
         isDelete: false
@@ -51,9 +69,9 @@ async function SaveData() {
     LoadData(); // Refresh lại bảng
 }
 
-// Xoá mềm: cập nhật isDelete = true, luôn truyền id là số
+// Xoá mềm: truyền id là string khi gọi API
 async function Delete(id) {
-    id = Number(id); // Đảm bảo id là số
+    id = id.toString(); // Đảm bảo id là string
     let data = await fetch('http://localhost:3000/posts/' + id);
     if (data.ok) {
         let post = await data.json();
