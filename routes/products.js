@@ -74,5 +74,17 @@ router.put('/:id', async function(req,res,next){
   //   data:item
   // })  
 })
+// Xoá mềm: đổi isDelete về true
+router.delete('/:id', async function(req, res, next) {
+  let updatedItem = await productModel.findByIdAndUpdate(
+    req.params.id,
+    { isDelete: true },
+    { new: true }
+  );
+  res.send({
+    success: true,
+    data: updatedItem
+  });
+});
 
 module.exports = router;
