@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API - User & Role Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1, h2 {
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .btn-success {
+            background-color: #28a745;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .response {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 15px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .response.success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+        .response.error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+        .status-indicator {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .status-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .status-error {
+            background-color: #dc3545;
+            color: white;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test API - User & Role Management</h1>
+    
+    <div class="container" style="background-color: #e3f2fd; border-left: 4px solid #2196f3;">
+        <h3>📡 Trạng thái kết nối</h3>
+        <p><strong>API Server:</strong> <span id="serverStatus">Đang kiểm tra...</span></p>
+        <p><strong>URL:</strong> <code>http://localhost:3000/api</code></p>
+        <p><em>Đảm bảo Node.js server đang chạy với lệnh: <code>npm start</code></em></p>
+    </div>
+    
+    <div class="container">
+        <h2>🔐 Authentication</h2>
+        <div class="form-group">
+            <label>Email:</label>
+            <input type="email" id="authEmail" value="admin@example.com">
+        </div>
+        <div class="form-group">
+            <label>Username:</label>
+            <input type="text" id="authUsername" value="admin">
+        </div>
+        <button onclick="testAuth()" class="btn-success">Login</button>
+        <div id="authResponse" class="response" style="display: none;"></div>
+    </div>
+
+    <div class="grid">
+        <!-- Role Management -->
+        <div class="container">
+            <h2>👥 Role Management</h2>
+            
+            <div class="section">
+                <h3>Create Role</h3>
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" id="roleName" placeholder="role name">
+                </div>
+                <div class="form-group">
+                    <label>Description:</label>
+                    <textarea id="roleDescription" placeholder="role description"></textarea>
+                </div>
+                <button onclick="createRole()" class="btn-success">Create Role</button>
+            </div>
+
+            <div class="section">
+                <h3>Get All Roles</h3>
+                <button onclick="getAllRoles()">Get All Roles</button>
+            </div>
+
+            <div class="section">
+                <h3>Get Role by ID</h3>
+                <div class="form-group">
+                    <label>Role ID:</label>
+                    <input type="number" id="roleId" placeholder="1">
+                </div>
+                <button onclick="getRoleById()">Get Role</button>
+            </div>
+
+            <div class="section">
+                <h3>Update Role</h3>
+                <div class="form-group">
+                    <label>Role ID:</label>
+                    <input type="number" id="updateRoleId" placeholder="1">
+                </div>
+                <div class="form-group">
+                    <label>New Name:</label>
+                    <input type="text" id="updateRoleName" placeholder="new name">
+                </div>
+                <div class="form-group">
+                    <label>New Description:</label>
+                    <textarea id="updateRoleDescription" placeholder="new description"></textarea>
+                </div>
+                <button onclick="updateRole()" class="btn-success">Update Role</button>
+            </div>
+
+            <div class="section">
+                <h3>Delete Role</h3>
+                <div class="form-group">
+                    <label>Role ID:</label>
+                    <input type="number" id="deleteRoleId" placeholder="1">
+                </div>
+                <button onclick="deleteRole()" class="btn-danger">Delete Role</button>
+            </div>
+
+            <div id="roleResponse" class="response" style="display: none;"></div>
+        </div>
+
+        <!-- User Management -->
+        <div class="container">
+            <h2>👤 User Management</h2>
+            
+            <div class="section">
+                <h3>Create User</h3>
+                <div class="form-group">
+                    <label>Username:</label>
+                    <input type="text" id="userUsername" placeholder="username">
+                </div>
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="password" id="userPassword" placeholder="password">
+                </div>
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="userEmail" placeholder="email@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Full Name:</label>
+                    <input type="text" id="userFullName" placeholder="Full Name">
+                </div>
+                <div class="form-group">
+                    <label>Avatar URL:</label>
+                    <input type="url" id="userAvatarUrl" placeholder="https://example.com/avatar.jpg">
+                </div>
+                <div class="form-group">
+                    <label>Role ID:</label>
+                    <input type="number" id="userRole" placeholder="1">
+                </div>
+                <button onclick="createUser()" class="btn-success">Create User</button>
+            </div>
+
+            <div class="section">
+                <h3>Get All Users</h3>
+                <div class="form-group">
+                    <label>Search by Username:</label>
+                    <input type="text" id="searchUsername" placeholder="username">
+                </div>
+                <div class="form-group">
+                    <label>Search by Full Name:</label>
+                    <input type="text" id="searchFullName" placeholder="full name">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="showDeletedUsers"> Hiển thị cả user đã xóa mềm
+                    </label>
+                </div>
+                <button onclick="getAllUsers()">Get All Users</button>
+            </div>
+
+            <div class="section">
+                <h3>Get User by ID</h3>
+                <div class="form-group">
+                    <label>User ID:</label>
+                    <input type="number" id="userId" placeholder="1">
+                </div>
+                <button onclick="getUserById()">Get User</button>
+            </div>
+
+            <div class="section">
+                <h3>Get User by Username</h3>
+                <div class="form-group">
+                    <label>Username:</label>
+                    <input type="text" id="getUserUsername" placeholder="username">
+                </div>
+                <button onclick="getUserByUsername()">Get User</button>
+            </div>
+
+            <div class="section">
+                <h3>Update User</h3>
+                <div class="form-group">
+                    <label>User ID:</label>
+                    <input type="number" id="updateUserId" placeholder="1">
+                </div>
+                <div class="form-group">
+                    <label>New Username:</label>
+                    <input type="text" id="updateUserUsername" placeholder="new username">
+                </div>
+                <div class="form-group">
+                    <label>New Password:</label>
+                    <input type="password" id="updateUserPassword" placeholder="new password">
+                </div>
+                <div class="form-group">
+                    <label>New Email:</label>
+                    <input type="email" id="updateUserEmail" placeholder="new email">
+                </div>
+                <div class="form-group">
+                    <label>New Full Name:</label>
+                    <input type="text" id="updateUserFullName" placeholder="new full name">
+                </div>
+                <div class="form-group">
+                    <label>New Avatar URL:</label>
+                    <input type="url" id="updateUserAvatarUrl" placeholder="new avatar url">
+                </div>
+                <div class="form-group">
+                    <label>Status:</label>
+                    <select id="updateUserStatus">
+                        <option value="">Keep current</option>
+                        <option value="true">Active</option>
+                        <option value="false">Inactive</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Role ID:</label>
+                    <input type="number" id="updateUserRole" placeholder="role id">
+                </div>
+                <button onclick="updateUser()" class="btn-success">Update User</button>
+            </div>
+
+            <div class="section">
+                <h3>Delete User</h3>
+                <div class="form-group">
+                    <label>User ID:</label>
+                    <input type="number" id="deleteUserId" placeholder="1">
+                </div>
+                <button onclick="deleteUser()" class="btn-danger">Delete User</button>
+            </div>
+
+            <div id="userResponse" class="response" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3000/api';
+
+        // Utility function to show response
+        function showResponse(elementId, data, isSuccess = null) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            
+            // Remove existing status classes
+            element.classList.remove('success', 'error');
+            
+            // Determine success status
+            if (isSuccess === null) {
+                isSuccess = data.success === true || (data.success === undefined && !data.error);
+            }
+            
+            // Add appropriate class
+            if (isSuccess) {
+                element.classList.add('success');
+            } else {
+                element.classList.add('error');
+            }
+            
+            // Format response with status indicator
+            const statusText = isSuccess ? '✅ THÀNH CÔNG' : '❌ LỖI';
+            const statusClass = isSuccess ? 'status-success' : 'status-error';
+            
+            element.innerHTML = `
+                <div class="status-indicator ${statusClass}">${statusText}</div>
+                <div>${JSON.stringify(data, null, 2)}</div>
+            `;
+        }
+
+        // Authentication
+        async function testAuth() {
+            try {
+                const email = document.getElementById('authEmail').value;
+                const username = document.getElementById('authUsername').value;
+                
+                if (!email || !username) {
+                    showResponse('authResponse', { error: 'Vui lòng nhập đầy đủ email và username' }, false);
+                    return;
+                }
+                
+                showResponse('authResponse', { message: 'Đang xử lý...' }, true);
+                
+                const response = await fetch(`${API_BASE}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, username })
+                });
+                
+                const data = await response.json();
+                showResponse('authResponse', data, data.success);
+            } catch (error) {
+                showResponse('authResponse', { error: error.message }, false);
+            }
+        }
+
+        // Role functions
+        async function createRole() {
+            try {
+                const name = document.getElementById('roleName').value;
+                const description = document.getElementById('roleDescription').value;
+                
+                if (!name.trim()) {
+                    showResponse('roleResponse', { error: 'Tên role là bắt buộc' }, false);
+                    return;
+                }
+                
+                showResponse('roleResponse', { message: 'Đang tạo role...' }, true);
+                
+                const response = await fetch(`${API_BASE}/roles`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, description })
+                });
+                
+                const data = await response.json();
+                showResponse('roleResponse', data, data.success);
+                
+                if (data.success) {
+                    // Clear form
+                    document.getElementById('roleName').value = '';
+                    document.getElementById('roleDescription').value = '';
+                }
+            } catch (error) {
+                showResponse('roleResponse', { error: error.message }, false);
+            }
+        }
+
+        async function getAllRoles() {
+            try {
+                const response = await fetch(`${API_BASE}/roles`);
+                const data = await response.json();
+                showResponse('roleResponse', data);
+            } catch (error) {
+                showResponse('roleResponse', { error: error.message });
+            }
+        }
+
+        async function getRoleById() {
+            try {
+                const id = document.getElementById('roleId').value;
+                const response = await fetch(`${API_BASE}/roles/${id}`);
+                const data = await response.json();
+                showResponse('roleResponse', data);
+            } catch (error) {
+                showResponse('roleResponse', { error: error.message });
+            }
+        }
+
+        async function updateRole() {
+            try {
+                const id = document.getElementById('updateRoleId').value;
+                const name = document.getElementById('updateRoleName').value;
+                const description = document.getElementById('updateRoleDescription').value;
+                
+                const body = {};
+                if (name) body.name = name;
+                if (description) body.description = description;
+                
+                const response = await fetch(`${API_BASE}/roles/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+                
+                const data = await response.json();
+                showResponse('roleResponse', data);
+            } catch (error) {
+                showResponse('roleResponse', { error: error.message });
+            }
+        }
+
+        async function deleteRole() {
+            try {
+                const id = document.getElementById('deleteRoleId').value;
+                const response = await fetch(`${API_BASE}/roles/${id}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                showResponse('roleResponse', data);
+            } catch (error) {
+                showResponse('roleResponse', { error: error.message });
+            }
+        }
+
+        // User functions
+        async function createUser() {
+            try {
+                const username = document.getElementById('userUsername').value;
+                const password = document.getElementById('userPassword').value;
+                const email = document.getElementById('userEmail').value;
+                const fullName = document.getElementById('userFullName').value;
+                const avatarUrl = document.getElementById('userAvatarUrl').value;
+                const role = document.getElementById('userRole').value;
+                
+                // Validation
+                if (!username.trim()) {
+                    showResponse('userResponse', { error: 'Username là bắt buộc' }, false);
+                    return;
+                }
+                if (!password.trim()) {
+                    showResponse('userResponse', { error: 'Password là bắt buộc' }, false);
+                    return;
+                }
+                if (!email.trim()) {
+                    showResponse('userResponse', { error: 'Email là bắt buộc' }, false);
+                    return;
+                }
+                
+                showResponse('userResponse', { message: 'Đang tạo user...' }, true);
+                
+                const body = { username, password, email };
+                if (fullName) body.fullName = fullName;
+                if (avatarUrl) body.avatarUrl = avatarUrl;
+                if (role) body.role = parseInt(role);
+                
+                const response = await fetch(`${API_BASE}/users`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+                
+                const data = await response.json();
+                showResponse('userResponse', data, data.success);
+                
+                if (data.success) {
+                    // Clear form
+                    document.getElementById('userUsername').value = '';
+                    document.getElementById('userPassword').value = '';
+                    document.getElementById('userEmail').value = '';
+                    document.getElementById('userFullName').value = '';
+                    document.getElementById('userAvatarUrl').value = '';
+                    document.getElementById('userRole').value = '';
+                }
+            } catch (error) {
+                showResponse('userResponse', { error: error.message }, false);
+            }
+        }
+
+        async function getAllUsers() {
+            try {
+                const username = document.getElementById('searchUsername').value;
+                const fullName = document.getElementById('searchFullName').value;
+                const showDeleted = document.getElementById('showDeletedUsers').checked;
+                
+                let url = `${API_BASE}/users`;
+                const params = new URLSearchParams();
+                if (username) params.append('username', username);
+                if (fullName) params.append('fullName', fullName);
+                if (showDeleted) params.append('includeDeleted', 'true');
+                
+                if (params.toString()) {
+                    url += '?' + params.toString();
+                }
+                
+                const response = await fetch(url);
+                const data = await response.json();
+                showResponse('userResponse', data);
+            } catch (error) {
+                showResponse('userResponse', { error: error.message });
+            }
+        }
+
+        async function getUserById() {
+            try {
+                const id = document.getElementById('userId').value;
+                const response = await fetch(`${API_BASE}/users/${id}`);
+                const data = await response.json();
+                showResponse('userResponse', data);
+            } catch (error) {
+                showResponse('userResponse', { error: error.message });
+            }
+        }
+
+        async function getUserByUsername() {
+            try {
+                const username = document.getElementById('getUserUsername').value;
+                const response = await fetch(`${API_BASE}/users/username/${username}`);
+                const data = await response.json();
+                showResponse('userResponse', data);
+            } catch (error) {
+                showResponse('userResponse', { error: error.message });
+            }
+        }
+
+        async function updateUser() {
+            try {
+                const id = document.getElementById('updateUserId').value;
+                const username = document.getElementById('updateUserUsername').value;
+                const password = document.getElementById('updateUserPassword').value;
+                const email = document.getElementById('updateUserEmail').value;
+                const fullName = document.getElementById('updateUserFullName').value;
+                const avatarUrl = document.getElementById('updateUserAvatarUrl').value;
+                const status = document.getElementById('updateUserStatus').value;
+                const role = document.getElementById('updateUserRole').value;
+                
+                const body = {};
+                if (username) body.username = username;
+                if (password) body.password = password;
+                if (email) body.email = email;
+                if (fullName) body.fullName = fullName;
+                if (avatarUrl) body.avatarUrl = avatarUrl;
+                if (status !== '') body.status = status === 'true';
+                if (role) body.role = parseInt(role);
+                
+                const response = await fetch(`${API_BASE}/users/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                });
+                
+                const data = await response.json();
+                showResponse('userResponse', data);
+            } catch (error) {
+                showResponse('userResponse', { error: error.message });
+            }
+        }
+
+        async function deleteUser() {
+            try {
+                const id = document.getElementById('deleteUserId').value;
+                
+                if (!id) {
+                    showResponse('userResponse', { error: 'Vui lòng nhập User ID' }, false);
+                    return;
+                }
+                
+                showResponse('userResponse', { message: 'Đang xóa mềm user...' }, true);
+                
+                const response = await fetch(`${API_BASE}/users/${id}`, {
+                    method: 'DELETE'
+                });
+                const data = await response.json();
+                showResponse('userResponse', data, data.success);
+                
+                if (data.success) {
+                    // Clear form
+                    document.getElementById('deleteUserId').value = '';
+                    // Refresh user list
+                    setTimeout(() => {
+                        getAllUsers();
+                    }, 1000);
+                }
+            } catch (error) {
+                showResponse('userResponse', { error: error.message }, false);
+            }
+        }
+
+        // Check server connection
+        async function checkServerConnection() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('serverStatus').innerHTML = 
+                        '<span style="color: #28a745;">✅ Đã kết nối</span>';
+                } else {
+                    document.getElementById('serverStatus').innerHTML = 
+                        '<span style="color: #dc3545;">❌ Lỗi kết nối</span>';
+                }
+            } catch (error) {
+                document.getElementById('serverStatus').innerHTML = 
+                    '<span style="color: #dc3545;">❌ Không thể kết nối đến server</span>';
+            }
+        }
+
+        // Load initial data
+        window.onload = function() {
+            checkServerConnection();
+            getAllRoles();
+            getAllUsers();
+        };
+    </script>
+</body>
+</html>
