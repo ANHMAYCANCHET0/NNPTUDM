@@ -1,0 +1,72 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "$2b$10$rQZ8K9vL2mN3pO4qR5sT6uV7wX8yZ9aA0bB1cC2dD3eE4fF5gG6hH7iI8jJ9kK0lL1mM2nN3oO4pP5qQ6rR7sS8tT9uU0vV1wW2xX3yY4zZ5",
+      "email": "admin@example.com",
+      "fullName": "Administrator",
+      "avatarUrl": "https://via.placeholder.com/150",
+      "status": true,
+      "role": 1,
+      "loginCount": 9,
+      "isDelete": false,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2025-10-02T01:23:15.629Z"
+    },
+    {
+      "id": 2,
+      "username": "user1",
+      "password": "$2b$10$rQZ8K9vL2mN3pO4qR5sT6uV7wX8yZ9aA0bB1cC2dD3eE4fF5gG6hH7iI8jJ9kK0lL1mM2nN3oO4pP5qQ6rR7sS8tT9uU0vV1wW2xX3yY4zZ5",
+      "email": "user1@example.com",
+      "fullName": "Nguyen Van A",
+      "avatarUrl": "",
+      "status": false,
+      "role": 2,
+      "loginCount": 0,
+      "isDelete": false,
+      "createdAt": "2024-01-02T00:00:00.000Z",
+      "updatedAt": "2024-01-02T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "username": "nguyenchidi",
+      "password": "$2b$10$p77ueu/NQA2FrZ6ZAB0QA.3P4la0Vv6NVmoh9W.CEF.dj6Cb7.G8C",
+      "email": "nguyenchidi.dev@gmail.com",
+      "fullName": "Nguyễn Thành Lộc",
+      "avatarUrl": "https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-6/511165586_744623838078588_7330359259982784661_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_eui2=AeFFCFDtsA4TnERk45pZt7vkbTuPkjx17Q5tO4-SPHXtDleieKLI1V81qi1hQ2ICd2Oqbnm_wR4QTP-aQBxtTFsS&_nc_ohc=5Vfdn3egO5gQ7kNvwGoWp6Y&_nc_oc=AdkMhFvX1TmWqMZ2M67cAmhyJV-1wgk5g6SUi51l5RFMSpmW8OW1buS34xxX21eASrE&_nc_zt=23&_nc_ht=scontent.fsgn8-3.fna&_nc_gid=Qs9bC9Zv9gDe3EhOIs2bEA&oh=00_AfbMq5u22TzeamcLgVs5NId4OzBqq619rDOCGFjGxB38xw&oe=68E3B980",
+      "status": false,
+      "role": 3,
+      "loginCount": 0,
+      "isDelete": true,
+      "createdAt": "2025-10-02T01:36:09.369Z",
+      "updatedAt": "2025-10-02T01:36:17.536Z"
+    }
+  ],
+  "roles": [
+    {
+      "id": 1,
+      "name": "admin",
+      "description": "system admin",
+      "isDelete": false,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2025-10-02T01:33:59.322Z"
+    },
+    {
+      "id": 2,
+      "name": "user",
+      "description": "Regular user role",
+      "isDelete": false,
+      "createdAt": "2024-01-01T00:00:00.000Z",
+      "updatedAt": "2024-01-01T00:00:00.000Z"
+    },
+    {
+      "id": 3,
+      "name": "customer",
+      "description": "khách thôi",
+      "isDelete": false,
+      "createdAt": "2025-10-02T01:29:05.231Z",
+      "updatedAt": "2025-10-02T01:29:05.231Z"
+    }
+  ]
+}
