@@ -1,0 +1,73 @@
+{
+  "posts": [
+    {
+      "id": "1",
+      "title": "a title",
+      "views": 100,
+      "isDelete": false
+    },
+    {
+      "id": "2",
+      "title": "another title",
+      "views": 200,
+      "isDelete": false
+    },
+    {
+      "title": "heheeh",
+      "views": "20000",
+      "id": "3",
+      "isDelete": false
+    },
+    {
+      "id": "4",
+      "title": "Xin Chao",
+      "views": "1111111",
+      "isDelete": true
+    },
+    {
+      "id": "7",
+      "title": "Số 7 may mắn",
+      "views": "12",
+      "isDelete": false
+    },
+    {
+      "id": "8",
+      "title": "May mắn",
+      "views": "1200",
+      "isDelete": true
+    },
+    {
+      "id": "5",
+      "title": "Nhỏ thôi",
+      "views": "55",
+      "isDelete": true
+    },
+    {
+      "id": "6",
+      "title": "Nhỏ thôi nhé",
+      "views": "55",
+      "isDelete": false
+    },
+    {
+      "id": "9",
+      "title": "Nhỏ thôi nhé nhỏ ới",
+      "views": "5533",
+      "isDelete": true
+    }
+  ],
+  "comments": [
+    {
+      "id": "1",
+      "text": "a comment about post 1",
+      "postId": "1"
+    },
+    {
+      "id": "2",
+      "text": "another comment about post 1",
+      "postId": "1"
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
