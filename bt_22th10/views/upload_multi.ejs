@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Upload nhiều ảnh</title>
+</head>
+<body>
+    <h1>Upload nhiều ảnh (Yêu cầu đăng nhập)</h1>
+    <!--
+        Form này gửi nhiều file với field name = 'images'.
+        Sử dụng thuộc tính multiple để chọn nhiều file.
+    -->
+    <form id="formUploadMulti" enctype="multipart/form-data" method="post" action="/users/album">
+        <label>Chọn nhiều file ảnh (jpg, png, ...):</label><br />
+        <input type="file" name="images" accept="image/*" multiple required /><br /><br />
+        <button type="submit">Upload ảnh</button>
+    </form>
+
+    <p style="color:gray">Ghi chú: form mặc định sẽ không gửi header Authorization; để thử nhanh bạn có thể đăng nhập qua API /auth/login và server sẽ lưu cookie token (nếu server và trình duyệt cùng origin).</p>
+</body>
+</html>

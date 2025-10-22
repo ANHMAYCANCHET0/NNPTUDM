@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Upload 1 ảnh avatar</title>
+</head>
+<body>
+    <h1>Upload 1 ảnh avatar (Yêu cầu đăng nhập)</h1>
+    <!--
+        Form này gửi một file với field name = 'avatar'.
+        Để dùng API yêu cầu đăng nhập, bạn cần cung cấp header Authorization: Bearer <token>
+        Hoặc server có thể đọc cookie nếu dùng cookie token.
+    -->
+    <form id="formUpload" enctype="multipart/form-data" method="post" action="/users/avatar">
+        <label>Chọn file ảnh (jpg, png, ...):</label><br />
+        <input type="file" name="avatar" accept="image/*" required /><br /><br />
+        <button type="submit">Upload avatar</button>
+    </form>
+
+    <p style="color:gray">Ghi chú: form mặc định sẽ không gửi header Authorization; để thử nhanh bạn có thể đăng nhập qua API /auth/login và server sẽ lưu cookie token (nếu server và trình duyệt cùng origin).</p>
+</body>
+</html>
